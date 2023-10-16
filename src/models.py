@@ -5,17 +5,12 @@ from sqlalchemy import (MetaData,
                         String,
                         DateTime,
                         Text,
-                        Float,
-                        Boolean
                         )
 from sqlalchemy.orm import (Mapped,
                             mapped_column,
                             relationship
                             )
 from datetime import datetime
-
-
-metadata = MetaData()
 
 
 class Base(DeclarativeBase):
@@ -31,6 +26,7 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     friends = relationship("Friend", cascade="all, delete", primaryjoin="User.id == Friend.friend_id")
+    messages = relationship("Message", cascade="all, delete")
 
 class Friend(Base):
     __tablename__ = 'friends'
@@ -44,4 +40,30 @@ class Friend(Base):
     friend = relationship("User", primaryjoin="Friend.friend_id == User.id", lazy="joined", overlaps="friends")
 
 
+class Chat(Base):
+    __tablename__ = "chats"
 
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+
+    chat_members = relationship("ChatMember", cascade="all, delete")
+    messages = relationship("Message", cascade="all, delete")
+
+class ChatMember(Base):
+    __tablename__ = "chat_members"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+    chat_id: Mapped[int] = mapped_column(ForeignKey('chats.id', ondelete="CASCADE"))
+
+    user = relationship("User")
+    chat = relationship("Chat")
+
+
+class Message(Base):
+    __tablename__ = "messages"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    text: Mapped[str] = mapped_column(Text)
+    user_id: Mapped[int] = mapped_column(ForeignKey('users.id', ondelete="CASCADE"))
+    chat_id: Mapped[int] = mapped_column(ForeignKey('chats.id', ondelete="CASCADE"))
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)

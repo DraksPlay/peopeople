@@ -11,7 +11,14 @@ fastapi = {extras = ["all"], version = "^0.103.2"}
 alembic = "^1.12.0"
 psycopg2 = "^2.9.9"
 asyncpg = "^0.28.0"
+pytest = "^7.4.2"
+pytest-asyncio = "^0.21.1"
 
+[tool.pytest.ini_options]
+pythonpath = [
+  ".", "src",
+]
+asyncio_mode="auto"
 
 [build-system]
 requires = ["poetry-core"]
