@@ -1,5 +1,5 @@
-from typing import Optional, Sequence
-from sqlalchemy import select, update, delete
+from typing import Optional, Sequence, List
+from sqlalchemy import select, update, delete, and_
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from models import User, Friend
@@ -50,3 +50,22 @@ class FriendsLayer:
         res = await self.db_session.execute(query)
         friends = res.scalars().all()
         return friends
+
+    async def delete_friend(self,
+                            user_id: int,
+                            friend_id: int
+                            ) -> Optional[Friend]:
+        """
+        Function for generating a request to delete a user by his ID
+        :param user_id:
+        :return: Deleted user object
+        """
+        query = (
+            delete(Friend)
+            .where(and_(Friend.user_id == user_id, Friend.friend_id == friend_id))
+            .returning(Friend)
+        )
+        res = await self.db_session.execute(query)
+        friend = res.fetchone()
+        if friend is not None:
+            return friend[0]

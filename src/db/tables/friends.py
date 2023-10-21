@@ -44,3 +44,22 @@ async def get_friends_by_user_id(session: AsyncSession,
             user_id=user_id,
         )
         return friends
+
+
+async def delete_friend(session: AsyncSession,
+                        user_id: int,
+                        friend_id: int
+                        ) -> Optional[User]:
+    """
+    Function for deleting a user
+    :param session: async session for working with the database
+    :param user_id: User ID
+    :return: Deleted user object
+    """
+    async with session.begin():
+        friends_layer = FriendsLayer(session)
+        friend = await friends_layer.delete_friend(
+            user_id=user_id,
+            friend_id=friend_id
+        )
+        return friend

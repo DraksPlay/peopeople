@@ -9,7 +9,7 @@ import src.config as config
 engine = create_async_engine(
     config.DATABASE_URL,
     future=True,
-    echo=True,
+    echo=False,
     execution_options={"isolation_level": "AUTOCOMMIT"},
 )
 
