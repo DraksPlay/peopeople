@@ -49,7 +49,7 @@ async def get_friends_by_user_id(session: AsyncSession,
 async def delete_friend(session: AsyncSession,
                         user_id: int,
                         friend_id: int
-                        ) -> Optional[User]:
+                        ) -> Optional[Friend]:
     """
     Function for deleting a user
     :param session: async session for working with the database

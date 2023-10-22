@@ -26,6 +26,7 @@ class User(Base):
 
     friends = relationship("Friend", cascade="all, delete", primaryjoin="User.id == Friend.friend_id")
     messages = relationship("Message", cascade="all, delete")
+    chat_members = relationship("ChatMember", cascade="all, delete", back_populates="user")
 
 class Friend(Base):
     __tablename__ = 'friends'
@@ -44,7 +45,7 @@ class Chat(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
 
-    chat_members = relationship("ChatMember", cascade="all, delete")
+    chat_members = relationship("ChatMember", cascade="all, delete", back_populates="chat")
     messages = relationship("Message", cascade="all, delete")
 
 class ChatMember(Base):
@@ -54,8 +55,8 @@ class ChatMember(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     chat_id: Mapped[int] = mapped_column(ForeignKey('chats.id', ondelete="CASCADE"))
 
-    user = relationship("User")
-    chat = relationship("Chat")
+    user = relationship("User", back_populates="chat_members")
+    chat = relationship("Chat", back_populates="chat_members")
 
 
 class Message(Base):
