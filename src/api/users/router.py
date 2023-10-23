@@ -17,6 +17,7 @@ async def create_user(login: str, password: str, session: AsyncSession = Depends
                                    )
     return user
 
+
 @router.get("/user/{user_id}")
 async def get_user(user_id: int,
                    session: AsyncSession = Depends(get_db)):

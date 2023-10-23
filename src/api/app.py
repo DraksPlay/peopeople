@@ -7,7 +7,6 @@ from api.chats.router import router as chats_router
 from api.chat_members.router import router as chat_members_router
 from api.messages.router import router as messages_router
 
-
 app = FastAPI(docs_url=API_URL, title="PeoPeoPle API")
 
 app.include_router(users_router, prefix=API_URL, tags=["User"])
