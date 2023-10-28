@@ -9,7 +9,7 @@ from src.models import Base
 
 
 engine = create_async_engine(
-    config.DATABASE_URL_PROD,
+    config.DATABASE_URL if config.DEBUG else config.DATABASE_URL_PROD,
     future=True,
     echo=False,
     execution_options={"isolation_level": "AUTOCOMMIT"},
@@ -29,7 +29,7 @@ class LazyDbInit:
             engine = create_engine(f'postgresql://'
                                          f'{config.DB_USER}:'
                                          f'{config.DB_PASS}@'
-                                         f'db:'
+                                         f'{config.DB_HOST if config.DEBUG else "db"}:'
                                          f'{config.DB_PORT}/'
                                          f'{config.DB_NAME}')
 

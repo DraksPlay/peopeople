@@ -4,6 +4,10 @@ import os
 
 load_dotenv()
 
+"""
+COMMON
+"""
+DEBUG = True
 
 """
 API config
