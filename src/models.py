@@ -21,7 +21,7 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     login: Mapped[str] = mapped_column(String(50))
-    password: Mapped[str] = mapped_column(String(50))
+    password: Mapped[str] = mapped_column(String(64))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
     friends = relationship("Friend", cascade="all, delete", primaryjoin="User.id == Friend.friend_id")

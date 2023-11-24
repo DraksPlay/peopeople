@@ -10,12 +10,14 @@ COMMON
 DEBUG = True
 
 """
-API config
+API
 """
 API_URL = "/api/v1"
+API_PORT = 8000
+API_HOST = "127.0.0.1"
 
 """
-Database config
+DATABASE
 """
 DB_HOST = os.environ.get("DB_HOST")
 DB_PORT = os.environ.get("DB_PORT")
@@ -34,3 +36,11 @@ DB_USER_TEST = os.environ.get("DB_USER_TEST")
 DB_PASS_TEST = os.environ.get("DB_PASS_TEST")
 
 DATABASE_URL_TEST = f"postgresql+asyncpg://{DB_USER_TEST}:{DB_PASS_TEST}@{DB_HOST_TEST}:{DB_PORT_TEST}/{DB_NAME_TEST}"
+
+
+"""
+SERVER
+"""
+SERVER_URL = "/api/v1"
+SERVER_PORT = 8081
+SERVER_HOST = "127.0.0.1"
