@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
     async_sessionmaker
 )
+from .tables import Tables
 
 
 class Database:
@@ -14,6 +15,7 @@ class Database:
                  ) -> None:
         self.db_url = db_url
         self.is_generator = is_generator
+        self.tables = Tables
 
     def get_engine(self):
         engine = create_async_engine(
