@@ -21,15 +21,24 @@
         },
         data() {
             return {
+                socket: null,
                 messages: [
                     {text: "test message"},
                     {text: "hello"}
             ]
             }
         },
+        created() {
+            this.socket = new WebSocket("ws://localhost:8001/chat");
+            this.socket.onmessage = function(event) {
+                console.log(event);
+            }
+            
+        },
         methods: {
             sendMessage(message) {
-                this.messages.push(message)
+                this.messages.push(message);
+                this.socket.send(message);
         }
     }
   }

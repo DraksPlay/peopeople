@@ -13,6 +13,7 @@ async def get_messages(session: AsyncSession,
         messages = res.scalars().all()
         return messages
 
+
 async def create_message(session: AsyncSession,
                          text: str
                          ) -> Message:
