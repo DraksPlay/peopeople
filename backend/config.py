@@ -16,3 +16,8 @@ DB_HOST = os.environ.get("DB_HOST")
 DB_PORT = os.environ.get("DB_PORT")
 DB_NAME = os.environ.get("DB_NAME")
 DB_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{'db' if DOCKER else f'{DB_HOST}:{DB_PORT}'}/{DB_NAME}"
+
+# API
+API_HOST = "0.0.0.0"
+API_PORT = 8000
+API_URL = f"http://{API_HOST}:{API_PORT}"

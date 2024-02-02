@@ -22,23 +22,30 @@
         data() {
             return {
                 socket: null,
-                messages: [
-                    {text: "test message"},
-                    {text: "hello"}
-            ]
+                messages: []
             }
         },
         created() {
+            const self = this;
             this.socket = new WebSocket("ws://localhost:8001/chat");
+            
             this.socket.onmessage = function(event) {
                 console.log(event);
+
+                var obj = JSON.parse(event.data);
+                console.log(obj)
+                obj.forEach((value, index) => {
+                    console.log(value, index);
+                    self.messages.push({text: value.text})
+                })
+                
             }
             
         },
         methods: {
             sendMessage(message) {
                 this.messages.push(message);
-                this.socket.send(message);
+                this.socket.send(message.text);
         }
     }
   }
