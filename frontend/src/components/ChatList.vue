@@ -24,10 +24,12 @@
 
 <style scoped>
 .chat_list {
-    border: 2px solid #FF9400;
+    border: 2px solid #333333;
     border-radius: 10px;
     padding: 10px;
     overflow-y: scroll;
+    overflow-x: hidden;
+    word-wrap: break-word;
     height: 70vh;
 }
 

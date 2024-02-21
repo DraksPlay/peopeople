@@ -48,21 +48,22 @@ form {
 }
 
 input {
-    border: 2px solid#FF9400;
-    border-radius: 10px;
+    border: 2px solid#333333;
+    border-radius: 10px 0 0 10px;
     padding: 10px;
-    width: 75%;
+    width: 80%;
 }
 
 button {
-    width: 23%;
-    border-radius: 10px;
-    border: 2px solid #FF9400;
+    width: 20%;
+    border-radius: 0 10px 10px 0;
+    border: solid #333333;
+    border-width: 2px 2px 2px 0;
     background: white;
 }
 
 button:hover {
-    background: #FF9400;
+    background: #333333;
     color: white;
 }
 </style>

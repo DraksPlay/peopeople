@@ -1,13 +1,20 @@
-from typing import Generator
+from typing import (
+    Generator,
+    Coroutine,
+    Any
+)
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
+    AsyncEngine,
     create_async_engine,
     async_sessionmaker
 )
+
+
 from .tables import Tables
 
 
-class Database:
+class AsyncDatabase:
 
     def __init__(self,
                  db_url: str,
@@ -17,7 +24,7 @@ class Database:
         self.is_generator = is_generator
         self.tables = Tables
 
-    def get_engine(self):
+    def get_engine(self) -> AsyncEngine:
         engine = create_async_engine(
             self.db_url,
             future=True,
@@ -27,31 +34,35 @@ class Database:
 
         return engine
 
-    def get_async_session(self):
+    def get_async_sessionmaker(self) -> async_sessionmaker:
         engine = self.get_engine()
         async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
+
         return async_session
 
     async def get_session(self) -> AsyncSession:
-        async_session = self.get_async_session()
+        sessionmaker = self.get_async_sessionmaker()
         try:
-            async with async_session() as session:
+            async with sessionmaker() as session:
                 return session
         finally:
             await session.close()
 
-    def get_session_generator(self):
+    def get_session_generator(self) -> "() -> Generator":
         async def inner() -> Generator:
-            async_session = self.get_async_session()
+            sessionmaker = self.get_async_sessionmaker()
             try:
-                async with async_session() as session:
+                async with sessionmaker() as session:
                     yield session
             finally:
                 await session.close()
 
         return inner
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self,
+                 *args,
+                 **kwargs
+                 ) -> "Generator | Coroutine[Any, Any, AsyncSession] | Any":
         if self.is_generator:
             return self.get_session_generator()
 

@@ -1,4 +1,7 @@
 <template>
+  <head>
+    <title>Chat</title>
+  </head>
   <div class="app">
 
     <ChatMessage
@@ -24,6 +27,7 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  color: #333333;
 }
 
 .app {

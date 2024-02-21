@@ -30,12 +30,8 @@
             this.socket = new WebSocket("ws://localhost:8001/chat");
             
             this.socket.onmessage = function(event) {
-                console.log(event);
-
                 var obj = JSON.parse(event.data);
-                console.log(obj)
-                obj.forEach((value, index) => {
-                    console.log(value, index);
+                obj.forEach((value) => {
                     self.messages.push({text: value.text})
                 })
                 
@@ -45,7 +41,11 @@
         methods: {
             sendMessage(message) {
                 this.messages.push(message);
-                this.socket.send(message.text);
+                var obj = {
+                    text: message.text,
+                }
+                var json = JSON.stringify(obj);
+                this.socket.send(json);
         }
     }
   }
@@ -53,7 +53,7 @@
 
 <style scoped>
 .chat {
-    border: solid 2px #FF9400;
+    border: solid 2px #333333;
     border-radius: 10px;
     padding: 10px;
     margin-top: 30px;

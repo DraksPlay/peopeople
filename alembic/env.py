@@ -5,9 +5,9 @@ from alembic import context
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path.cwd() / "src"))
+sys.path.insert(0, str(Path.cwd() / "backend"))
 
-from models import Base
+from api.models import Base
 from config import (
     DB_USER,
     DB_PASS,

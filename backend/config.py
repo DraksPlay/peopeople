@@ -7,7 +7,8 @@ load_dotenv()
 
 
 # DOCKER
-DOCKER = False
+DOCKER = int(os.environ.get("DOCKER", 0))
+
 
 # DATABASE
 DB_USER = os.environ.get("DB_USER")
@@ -21,3 +22,6 @@ DB_URL = f"postgresql+asyncpg://{DB_USER}:{DB_PASS}@{'db' if DOCKER else f'{DB_H
 API_HOST = "0.0.0.0"
 API_PORT = 8000
 API_URL = f"http://{API_HOST}:{API_PORT}"
+
+# SECRET KEYS
+AUTH_SECRET_KEY = os.environ.get("AUTH_SECRET_KEY")
