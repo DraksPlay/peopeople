@@ -3,6 +3,7 @@
         
         <ChatList
         :messages="messages"
+        :username="username"
         />
 
         <ChatForm
@@ -22,27 +23,49 @@
         data() {
             return {
                 socket: null,
-                messages: []
+                messages: [],
+                username: null
             }
         },
         created() {
             const self = this;
             this.socket = new WebSocket("ws://localhost:8001/chat");
+
+            this.socket.onopen = function() {
+               var obj = {
+                    "event": "open",
+                    "body": {}
+                }
+                var json = JSON.stringify(obj);
+                self.socket.send(json)
+            }
             
             this.socket.onmessage = function(event) {
                 var obj = JSON.parse(event.data);
-                obj.forEach((value) => {
-                    self.messages.push({text: value.text})
-                })
-                
+                console.log(obj)
+                if (obj.event == "messages") {
+                    obj.body.messages.forEach((value) => {
+                        self.messages.push({text: value.text, username: value.username})
+                    })
+                } else if (obj.event == "open") {
+                    self.username = obj.body.username
+                }
             }
             
         },
         methods: {
             sendMessage(message) {
-                this.messages.push(message);
-                var obj = {
+                var new_message = {
                     text: message.text,
+                    username: this.username
+                }
+                this.messages.push(new_message);
+                var obj = {
+                    "event": "new_message",
+                    "body": {
+                        "text": new_message.text,
+                        "username": new_message.username
+                    }
                 }
                 var json = JSON.stringify(obj);
                 this.socket.send(json);

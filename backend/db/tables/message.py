@@ -1,5 +1,6 @@
 from typing import Sequence
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from api.models import Message
@@ -8,7 +9,10 @@ from api.models import Message
 async def get_messages(session: AsyncSession,
                        ) -> Sequence[Message]:
     async with session.begin():
-        query = select(Message)
+        query = (
+            select(Message).
+            options(joinedload(Message.user))
+        )
         res = await session.execute(query)
         messages = res.scalars().all()
         return messages

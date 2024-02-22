@@ -1,8 +1,11 @@
 <template>
     <div class="chat_list" v-scroll_down>
-
+        
         <div class="message" v-for="(message, index) in messages" :key="index">
-            <div class="message_content">
+            <div class="message_content" v-if="this.username == message.username" style="justify-self: flex-end;">
+                {{ message.text }}
+            </div>
+            <div class="message_content" v-else>
                 {{ message.text }}
             </div>
         </div>
@@ -16,6 +19,10 @@
         props: {
             messages: {
                 type: Array,
+                required: true
+            },
+            username: {
+                type: String,
                 required: true
             }
         }
@@ -35,12 +42,13 @@
 
 .message {
     margin-top: 10px;
+    display: grid;
 }
 
 .message_content {
     background-color: lightgray;
     width: 50%;
     border-radius: 10px;
-    padding: 10px
+    padding: 10px;
 }
 </style>

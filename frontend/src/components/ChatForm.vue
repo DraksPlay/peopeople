@@ -21,7 +21,8 @@
         data() {
             return {
                 message: {
-                    text: ""
+                    text: "",
+                    username: ""
                 }
             }
         },

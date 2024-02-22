@@ -60,19 +60,17 @@ class WebsocketManager:
     async def wait_message(self,
                            sender: WebSocket,
                            mode: Mode = Mode.JSON,
-                           validator: Optional[Callable] = None
                            ) -> Any | str | bytes | None:
         """
-
         :param sender:
         :param mode:
-        :param validator:
         :return: Description return values:
         - Any:
         - str:
         - bytes:
         - None: Indication that the data has arrived and could not be converted to the desired type
         """
+
         match mode:
             case Mode.JSON:
                 try:
@@ -85,8 +83,5 @@ class WebsocketManager:
                 message = await sender.receive_bytes()
             case _:
                 raise "Mode is invalid"
-
-        if validator is not None:
-            message = validator(message)
 
         return message
