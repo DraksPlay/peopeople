@@ -1,2 +1,6 @@
-# peopeople
-Messanger | Web &amp; Desktop Client
+# PeoPeoPle
+Messanger | REST API, WebSocket, Frontend
+
+### Description
+
+### Configured & Run
