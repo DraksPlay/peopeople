@@ -1,7 +1,6 @@
 from typing import (
     Generator,
-    Coroutine,
-    Any
+    Type
 )
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
@@ -9,7 +8,13 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
     async_sessionmaker
 )
-
+from sqlalchemy.orm import (
+    DeclarativeBase,
+)
+from sqlalchemy import (
+    create_engine,
+    Engine
+)
 
 from .tables import Tables
 
@@ -24,7 +29,7 @@ class AsyncDatabase:
         self.is_generator = is_generator
         self.tables = Tables
 
-    def get_engine(self) -> AsyncEngine:
+    def get_aengine(self) -> AsyncEngine:
         engine = create_async_engine(
             self.db_url,
             future=True,
@@ -34,8 +39,18 @@ class AsyncDatabase:
 
         return engine
 
+    def get_engine(self) -> Engine:
+        engine = create_engine(
+            self.db_url,
+            future=True,
+            echo=False,
+            execution_options={"isolation_level": "AUTOCOMMIT"},
+        )
+
+        return engine
+
     def get_async_sessionmaker(self) -> async_sessionmaker:
-        engine = self.get_engine()
+        engine = self.get_aengine()
         async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
         return async_session
@@ -67,3 +82,4 @@ class AsyncDatabase:
             return self.get_session_generator()
 
         return self.get_session()
+
